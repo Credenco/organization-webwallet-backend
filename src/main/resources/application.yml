@@ -1,0 +1,72 @@
+spring:
+  application:
+    name: webwallet-backend
+
+  datasource:
+    url: from_profile
+    username: from_profile
+    password: from_profile
+  flyway:
+    url: from_profile
+    user: from_profile
+    password: from_profile
+  jpa:
+    open-in-view: true
+    show-sql: false
+  mvc:
+    format:
+      date: yyyy-MM-dd
+    static-path-pattern: /api/static/**
+  docker.compose.lifecycle-management: start_only
+  threads:
+    virtual:
+      enabled: true
+
+management:
+  endpoint:
+    restart:
+      enabled: true
+    health:
+      probes:
+        enabled: true
+      livenessState:
+        enabled: true
+      readinessState:
+        enabled: true
+  endpoints:
+    web:
+      exposure:
+        include: "restart,health"
+    restart:
+      enabled: true
+    shutdown:
+      enabled: true
+  server:
+    port: 9187
+
+jwt:
+  paths-to-ignore: /public/**
+
+externalServices:
+  issuerApi:
+      url: http://organization-webwallet-issuer:80
+      bearerToken: myToken
+  verifierApi:
+    url: http://organization-webwallet-verifier:80
+    bearerToken: myToken
+    successRedirectUrl: https://furnitrade.acc.credenco.com/register/success?id=$id
+  ebsi:
+    environments:
+      pilot:
+        environment: pilot
+        didRegistryVersion: 5
+        walletClientUrl: https://wallet.credenco.com
+        taoIssuerUrl: http://localhost:8088/public/45297556-95d0-4bcf-99e7-7528a11b50ff/ebsi
+      conformance:
+        environment: conformance
+        didRegistryVersion: 5
+        walletClientUrl: https://wallet.credenco.com
+        taoIssuerUrl: https://api-conformance.ebsi.eu/conformance/v3/issuer-mock
+
+
+
